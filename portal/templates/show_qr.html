@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<link rel="icon" type="image/png" href="{{url_for('static', filename='assets/img/favicon.ico')}}">
+	<meta name="author" content="GMNX">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>QR Id | Thermal-AI </title>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='bootstrap/css/bootstrap.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/my-login.css')}}">
+</head>
+<body class="my-login-page">
+	<section class="h-100">
+		<div class="container h-100">
+			<div class="row justify-content-md-center h-100">
+				<div class="card-wrapper">
+					<div class="brand">
+							<img src="{{url_for('static', filename='img/qr-code.png')}}" alt="logo">
+					</div>
+					<div class="card fat">
+						<div class="card-body">
+							<h4 class="card-title">Your QR Id</h4>
+                            <div class="mt-4 text-center">
+								<img style='height: 100%; width: 100%; object-fit: contain' id="qr_id" alt="qr_id">
+								<img style='height: 15%; width: 20%; position: absolute; left: 50%; top: 47%; transform:translate(-50%, -50%);' src="{{url_for('static', filename='img/pintar-ai_bw.png')}}">
+                            </div>
+                            <div class="mt-4 text-center">
+                                This is your QR Id. You can use it to activate Thermal-AI reader.<br>Please save it to use it again in the future.
+                            </div>
+						</div>
+					</div>
+					<div class="footer">
+							Copyright &copy; <script>document.write(new Date().getFullYear())</script> pintar.ai. All rights reserved.
+						</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
+	<script src="{{url_for('static', filename='bootstrap/js/bootstrap.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/my-login.js')}}"></script>
+    <script>
+        data = "{{qr_id}}"
+        data = data.replace("b&#39;", "") //to get rid of start curly brace code 
+        data = data.replace("&#39;", "")  //to get rid of end curly bracecode 
+    
+        document.getElementById("qr_id").src = "data:image/jpeg;base64,"+data; // set src
+    </script>
+</body>
+</html>

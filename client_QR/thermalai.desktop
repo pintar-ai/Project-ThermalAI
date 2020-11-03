@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Encoding=UTF-8
+Name=Thermal-AI
+StartupWMClass=Thermal-AI
+Icon=/home/cairo/thermal-ai/client_QR/thermalai.png
+Terminal=false
+Exec=python3 /home/cairo/thermal-ai/client_QR/main_app.py
+Comment=Monitor body temperature with QR Id integrated
+Categories=Utility;ArtificialIntelligence;ImageProcessing;Monitor;Security;

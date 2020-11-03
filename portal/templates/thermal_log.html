@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <link rel="apple-touch-icon" sizes="76x76" href="{{url_for('static', filename='assets/img/apple-icon.png')}}">
+    <link rel="icon" type="image/png" href="{{url_for('static', filename='assets/img/favicon.ico')}}">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
+    <title>Visitor Record | Thermal-AI</title>
+    <meta content='width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0, shrink-to-fit=no'
+        name='viewport' />
+    <!--     Fonts and icons     -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700,200" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/latest/css/font-awesome.min.css" />
+    <!-- CSS Files -->
+    <link rel="stylesheet" type="text/css" href="https://code.jquery.com/ui/1.12.0/themes/smoothness/jquery-ui.css">
+    <link href="{{url_for('static', filename='assets/css/bootstrap.min.css')}}" rel="stylesheet" />
+    <link href="{{url_for('static', filename='assets/css/light-bootstrap-dashboard.css')}}" +"?v=2.0.1"
+        rel="stylesheet" />
+    <!--sorttablejs -->
+    <script src="{{url_for('static', filename='js/sorttable.js')}}"></script>
+</head>
+
+<body>
+
+
+    <div class="wrapper">
+
+        <div class="sidebar" data-color="blue">
+            <!--
+        Tip 1: You can change the color of the sidebar using: data-color="purple | blue | green | orange | red"
+
+        Tip 2: you can also add an image using data-image tag data-image="{{url_for('static', filename='assets/img/sidebar-5.jpg')}}"
+    -->
+            <div class="sidebar-wrapper">
+
+                <div class="logo">
+                    <a href="" class="simple-text">
+                        Thermal-AI
+                    </a>
+                    {% if error %}
+                    <div class="alert alert-danger">
+                        <strong>{{error}}</strong>
+                    </div>
+                    {% endif %}
+                </div>
+                <ul class="nav">
+                    <li>
+                        <a class="nav-link" href="{{ url_for('admin_dash') }}">
+                            <i class="nc-icon nc-chart-pie-35"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{{ url_for('user_profile') }}">
+                            <i class="nc-icon nc-circle-09"></i>
+                            <p>Admin Profile</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{{ url_for('user_list') }}">
+                            <i class="nc-icon nc-notes"></i>
+                            <p>User List</p>
+                        </a>
+                    </li>
+                    <li>
+                        <a class="nav-link" href="{{ url_for('device_list') }}">
+                            <i class="nc-icon nc-cctv"></i>
+                            <p>Device List</p>
+                        </a>
+                    </li>
+                    <li class="nav-item active">
+                        <a class="nav-link" href="{{ url_for('thermal_log') }}">
+                            <i class="nc-icon nc-single-copy-04"></i>
+                            <p>Visitor Record</p>
+                        </a>
+                    </li>
+
+
+                </ul>
+            </div>
+        </div>
+        <div class="main-panel">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg " color-on-scroll="500">
+                <div class=" container-fluid  ">
+                    <a class="navbar-brand" href="{{ url_for('thermal_log') }}"> Dashboard </a>
+
+                    <small class="d-lg-none"  >&copy; <script>document.write(new Date().getFullYear())</script> pintar.ai</small>
+                    
+                    <button href="" class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse"
+                        aria-controls="navigation-index" aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-bar burger-lines"></span>
+                        <span class="navbar-toggler-bar burger-lines"></span>
+                        <span class="navbar-toggler-bar burger-lines"></span>
+                    </button>
+
+                    
+                    
+                
+                    
+                    
+                    <div class="collapse navbar-collapse justify-content-end" id="navigation">
+                            <small style="margin:10px;" class="d-none d-lg-block" >&copy; <script>document.write(new Date().getFullYear())</script> pintar.ai</small>
+                        
+                        <ul class="nav navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <!--<i class="nc-icon nc-palette"></i>-->
+                                <span class="d-lg-none">Dashboard</span>
+                            </li>
+                        </ul>
+                        <ul class="navbar-nav ml-auto">
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="{{ url_for('thermal_log') }}"
+                                    id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true"
+                                    aria-expanded="false">
+                                    
+                                    <span class="no-icon">Menu</span>
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                                    <a class="dropdown-item" href="{{ url_for('thermal_log') }}">User Profile</a>
+                                    <a class="dropdown-item" href="{{ url_for('thermal_log') }}">User List</a>
+                                    <a class="dropdown-item" href="{{ url_for('thermal_log') }}">Maps</a>
+                                    <div class="divider"></div>
+                                    <a class="dropdown-item" href="#">Contact Us</a>
+                                </div>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="{{ url_for('logout') }}">
+                                    <span class="no-icon">Log out</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+            <!-- End Navbar -->
+            <div class="container" style="margin-top: 25px;">
+                <div class="row">
+                    <div class='col-sm' >
+                        <h4 class="card-title">Filter By Date</h4>
+                        <form>
+                            <div class="form-group">
+                                <input id="datepicker" width="276" data-date-format='dd/mm/yy'/> 
+                            </div>
+                        </form>
+                    </div>
+                    <div class='col-sm' >
+                        <h4 class="card-title">Filter By Week</h4>
+                        <form>
+                            <div class="form-group">
+                                <input id="datepicker2" width="276" data-date-format='dd/mm/yy'/> 
+                            </div>
+                        </form>
+                        <p class="card-category">*please pick first date of the week.</p>
+                    </div>
+                    <div class='col-sm' >
+                        <h4 class="card-title">Filter By Year & Month</h4>
+                        <form>
+                            <div class="form-group">
+                                <input id="datepicker3" width="276" data-date-format='dd/mm/yy'/> 
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="content">
+                <div class="container-fluid">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="card strpied-tabled-with-hover">
+                                <div class="card-header ">
+                                    <h4 class="card-title">Record Temperature</h4> <button onclick="download_table_as_csv('record_table');" class="btn2" style="position: absolute; right: 0; top: 1%;"><i class="nc-icon nc-cloud-download-93 icon1"></i>&nbsp;&nbsp;&nbsp;Download Table</button>
+                                </div>
+                                <div class="card-body table-full-width table-responsive" id="table_content" style="overflow-y: scroll; max-height: 550px;">
+                                    <table class="table table-hover table-striped sortable" id="record_table">
+                                        <thead style="background-color: black;">
+                                            <th><b>No</b></th>
+                                            <th><b>Visitor Name</b>  <i class="fa fa-fw fa-sort"></i></th>
+                                            <th><b>Phone Number</b>  <i class="fa fa-fw fa-sort"></i></th>
+                                            <th><b>Device Name</b>  <i class="fa fa-fw fa-sort"></i></th>
+                                            <th><b>Temperature</b>  <i class="fa fa-fw fa-sort"></i></th>
+                                            <th><b>Timestamp</b>  <i class="fa fa-fw fa-sort"></i></th>
+                                        </thead>
+                                        <tbody>
+                                            {% for data1 in show_record %}
+                                                <tr class="item">
+                                                    <td>{{loop.index}}</td>
+                                                    <td>{{ data1.Qr.name }}</td>
+                                                    <td>{{ data1.Qr.phone_number.e164  }}</td>
+                                                    <td>{{ data1.Device.name }}</td>
+                                                    <td>{{ data1.Record.temperature }}</td>
+                                                    <td>{{ data1.Record.tz_time.strftime('%H:%M:%S %d-%m-%Y') }}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+            </div>
+
+            <footer class="footer">
+                    <div class="container">
+                        <nav>
+                            <ul class="footer-menu">
+                                <li>
+                                    <a href="{{ url_for('thermal_log') }}">
+                                        Home
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#">
+                                        Contact Us
+                                    </a>
+                                </li>
+                            </ul>
+                            <p class="copyright text-center">
+                                Copyright &copy; <script>document.write(new Date().getFullYear())</script> pintar.ai. All rights reserved.
+                            </p>
+                        </nav>
+                    </div>
+                </footer>
+            
+        </div>
+    </div>
+    
+
+    
+    
+</body>
+<!--   Core JS Files   -->
+<script src="{{url_for('static', filename='assets/js/core/jquery.3.2.1.min.js')}}" type="text/javascript"></script>
+<script src="//code.jquery.com/ui/1.12.0/jquery-ui.js"></script>
+<script src="{{url_for('static', filename='assets/js/core/popper.min.js')}}" type="text/javascript"></script>
+<script src="{{url_for('static', filename='assets/js/core/bootstrap.min.js')}}" type="text/javascript"></script>
+<!--  Plugin for Switches, full documentation here: http://www.jque.re/plugins/version3/bootstrap.switch/ -->
+<script src="{{url_for('static', filename='assets/js/plugins/bootstrap-switch.js')}}"></script>
+<!--  Notifications Plugin    -->
+<script src="{{url_for('static', filename='assets/js/plugins/bootstrap-notify.js')}}"></script>
+<!-- Control Center for Light Bootstrap Dashboard: scripts for the example pages etc -->
+<script src="{{url_for('static', filename='assets/js/light-bootstrap-dashboard.js')}}" +"?v=2.0.1"
+    type="text/javascript"></script>
+<script type="text/javascript">
+    $(document).ready(function() {
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+            {% if category == "success" %}
+                {% set icon = "nc-check-2" %}
+            {% elif category == "info" %}
+                {% set icon = "nc-bell-55" %}
+            {% elif category == "danger" %}
+                {% set icon = "nc-simple-remove" %}
+            {% else %}
+                {% set icon = "nc-notification-70" %}
+            {% endif %}
+            
+            $.notify({
+                icon: "nc-icon {{icon}}",  
+                message: "{{message}}"
+
+            }, {
+                type: "{{category}}",
+                timer: 8000,
+                placement: {
+                    from: "top",
+                    align: "right"
+                }
+            });
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+    });
+
+    function setValue(id,newvalue) {
+    var s= document.getElementById(id);
+        s.value = newvalue;
+    }
+    var date_string = "{{date_to_show.day}}/{{date_to_show.month}}/{{ date_to_show.year}}";
+    window.onload=function() {
+        setValue("datepicker",date_string);
+        setValue("datepicker2",date_string);
+    }
+</script>
+<script type="text/javascript">    
+    var date_to_show = new Date{{ date_to_show.year, (date_to_show.month-1), date_to_show.day, 00,00,00}};
+    $('#datepicker').datepicker({
+        dateFormat: 'dd/mm/yy',
+        uiLibrary: 'bootstrap4',
+        changeMonth: true,
+        changeYear: true,
+        defaultDate: date_to_show,
+        setDate: date_to_show,
+        onSelect: function (e) {
+            console.log("kentang");
+            $.getJSON("{{ url_for('thermal_log') }}", {date_pick:document.getElementById("datepicker").value, mode:"day", need_csv:false, need_json:true}, function(data) {
+                $("#record_table").find('tbody').detach();
+                $("#record_table").append($('<tbody>'));
+                var data_size = Object.keys(data.result).length;
+                console.log(data_size);
+                var i;
+                for(i = 0; i<data_size;i++){
+                    var temp_data = "<tr><td>"+ (i+1) + 
+                                    "</td><td>"+ data.result[i].name + 
+                                    "</td><td>"+ data.result[i].phone +
+                                    "</td><td>"+ data.result[i].device + 
+                                    "</td><td>"+ data.result[i].temperature + 
+                                    "</td><td>"+ data.result[i].timestamp +
+                                    "</td></tr>";
+                    $("#record_table tbody").append(temp_data);
+                }
+            });
+        }
+    });
+    $('#datepicker2').datepicker({
+        dateFormat: 'dd/mm/yy',
+        uiLibrary: 'bootstrap4',
+        changeMonth: true,
+        changeYear: true,
+        defaultDate: date_to_show,
+        setDate: date_to_show,
+        onSelect: function (e) {
+            console.log("kentang");
+            $.getJSON("{{ url_for('thermal_log') }}", {date_pick:document.getElementById("datepicker2").value, mode:"week", need_csv:false, need_json:true}, function(data) {
+                $("#record_table").find('tbody').detach();
+                $("#record_table").append($('<tbody>'));
+                var data_size = Object.keys(data.result).length;
+                console.log(data_size);
+                var i;
+                for(i = 0; i<data_size;i++){
+                    var temp_data = "<tr><td>"+ (i+1) + 
+                                    "</td><td>"+ data.result[i].name + 
+                                    "</td><td>"+ data.result[i].phone +
+                                    "</td><td>"+ data.result[i].device + 
+                                    "</td><td>"+ data.result[i].temperature + 
+                                    "</td><td>"+ data.result[i].timestamp +
+                                    "</td></tr>";
+                    $("#record_table tbody").append(temp_data);
+                }
+            });
+        }
+    });
+
+    $('#datepicker3').datepicker({
+        dateFormat: "mm/yy",
+        changeMonth: true,
+        changeYear: true,
+        showButtonPanel: true,
+        onClose: function(dateText, inst) {
+
+
+            function isDonePressed(){
+                return ($('#ui-datepicker-div').html().indexOf('ui-datepicker-close ui-state-default ui-priority-primary ui-corner-all ui-state-hover') > -1);
+            }
+
+            if (isDonePressed()){
+                var month = $("#ui-datepicker-div .ui-datepicker-month :selected").val();
+                var year = $("#ui-datepicker-div .ui-datepicker-year :selected").val();
+                var start_month = '01/'+(parseInt(month)+1)+'/'+year;
+                console.log(start_month);
+                $.getJSON("{{ url_for('thermal_log') }}", {date_pick:start_month, mode:"month", need_csv:false, need_json:true}, function(data) {
+                    $("#record_table").find('tbody').detach();
+                    $("#record_table").append($('<tbody>'));
+                    var data_size = Object.keys(data.result).length;
+                    console.log(data_size);
+                    var i;
+                    for(i = 0; i<data_size;i++){
+                        var temp_data = "<tr><td>"+ (i+1) + 
+                                        "</td><td>"+ data.result[i].name + 
+                                        "</td><td>"+ data.result[i].phone +
+                                        "</td><td>"+ data.result[i].device + 
+                                        "</td><td>"+ data.result[i].temperature + 
+                                        "</td><td>"+ data.result[i].timestamp +
+                                        "</td></tr>";
+                        $("#record_table tbody").append(temp_data);
+                    }
+                });
+                $(this).datepicker('setDate', new Date(year, month, 1)).trigger('change');
+                
+                    $('.date-picker').focusout()//Added to remove focus from datepicker input box on selecting date
+                    $(".ui-datepicker-calendar").hide();
+            }
+        },
+        beforeShow : function(input, inst) {
+
+            inst.dpDiv.addClass('month_year_datepicker')
+
+            if ((datestr = $(this).val()).length > 0) {
+                year = datestr.substring(datestr.length-4, datestr.length);
+                month = datestr.substring(0, 2);
+                $(this).datepicker('option', 'defaultDate', new Date(year, month-1, 1));
+                $(this).datepicker('setDate', new Date(year, month-1, 1));
+                $(".ui-datepicker-calendar").hide();
+            }
+            $(".ui-datepicker-calendar").hide();
+        }
+    }).focus(function () {
+    $(".ui-datepicker-calendar").hide();
+    });
+    
+</script>
+<script type="text/javascript">
+    // Quick and simple export target #table_id into a csv
+    function download_table_as_csv(table_id) {
+        // Select rows from table_id
+        var rows = document.querySelectorAll('table#' + table_id + ' tr');
+        // Construct csv
+        var csv = [];
+        for (var i = 0; i < rows.length; i++) {
+            var row = [], cols = rows[i].querySelectorAll('td, th');
+            for (var j = 0; j < cols.length; j++) {
+                // Clean innertext to remove multiple spaces and jumpline (break csv)
+                var data = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, '').replace(/(\s\s)/gm, ' ')
+                // Escape double-quote with double-double-quote (see https://stackoverflow.com/questions/17808511/properly-escape-a-double-quote-in-csv)
+                data = data.replace(/"/g, '""');
+                // Push escaped string, add = in front of + sign to make it visible in excel
+                if (j===2){
+                    row.push('="' + data + '"');
+                }else{
+                    row.push('"' + data + '"');
+                }
+            }
+            csv.push(row.join(','));
+        }
+        var csv_string = csv.join('\n');
+        // Download it
+        var filename = 'export_' + table_id + '_' + new Date().toLocaleDateString() + '.csv';
+        var link = document.createElement('a');
+        link.style.display = 'none';
+        link.setAttribute('target', '_blank');
+        link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv_string));
+        link.setAttribute('download', filename);
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+    }
+</script>
+</html>

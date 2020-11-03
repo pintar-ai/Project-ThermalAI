@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<link rel="icon" type="image/png" href="{{url_for('static', filename='assets/img/favicon.ico')}}">
+	<meta name="author" content="GMNX">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>Thank You | Thermal-AI </title>
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='bootstrap/css/bootstrap.min.css')}}">
+	<link rel="stylesheet" type="text/css" href="{{url_for('static', filename='css/my-login.css')}}">
+</head>
+<body class="my-login-page">
+	<section class="h-100">
+		<div class="container h-100">
+			<div class="row justify-content-md-center h-100">
+				<div class="card-wrapper">
+					<div class="brand">
+							<img src="{{url_for('static', filename='img/qr-code.png')}}" alt="logo">
+					</div>
+					<div class="card fat">
+						<div class="card-body">
+                            <p style="color:black; font-family:Verdana, sans-serif; font-size:12px; line-height:20px; text-align:left; margin:1em 0" align="left"><strong>Thank you for register, please verify your account by click VERIFY button from email that we sent.</strong></p>
+						</div>
+					</div>
+					<div class="footer">
+						Copyright &copy; <script>document.write(new Date().getFullYear())</script> pintar.ai. All rights reserved.
+						<a href="{{ url_for('contact_us') }}">
+							Contact Us 
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<script src="{{url_for('static', filename='js/jquery.min.js')}}"></script>
+	<script src="{{url_for('static', filename='bootstrap/js/bootstrap.min.js')}}"></script>
+	<script src="{{url_for('static', filename='js/my-login.js')}}"></script>
+	<!--  Notifications Plugin    -->
+	<script src="{{url_for('static', filename='assets/js/plugins/bootstrap-notify.js')}}"></script>
+	<script type="text/javascript">
+		$(document).ready(function() {
+		{% with messages = get_flashed_messages(with_categories=true) %}
+			{% if messages %}
+				{% for category, message in messages %}
+				{% if category == "success" %}
+					{% set icon = "nc-check-2" %}
+				{% elif category == "info" %}
+					{% set icon = "nc-bell-55" %}
+				{% elif category == "danger" %}
+					{% set icon = "nc-simple-remove" %}
+				{% else %}
+					{% set icon = "nc-notification-70" %}
+				{% endif %}
+				
+				$.notify({
+					icon: "nc-icon {{icon}}",  
+					message: "{{message}}"
+	
+				}, {
+					type: "{{category}}",
+					timer: 8000,
+					placement: {
+						from: "top",
+						align: "right"
+					}
+				});
+				{% endfor %}
+			{% endif %}
+		{% endwith %}
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,25 @@
+apt :
+python3-pyqt5 python3-pip python3-numpy cmake libjpeg-dev libusb-1.0-0-dev
+
+pip:
+imutils dlib scipy opencv-contrib-python
+
+libuvc purethermal:
+git clone https://github.com/groupgets/libuvc
+cd libuvc
+mkdir build
+cd build
+cmake ..
+make && sudo make install
+
+pass sudo libuvc:
+sudo sh -c "echo 'SUBSYSTEMS==\"usb\", ATTRS{idVendor}==\"1e4e\", ATTRS{idProduct}==\"0100\", SYMLINK+=\"pt1\", GROUP=\"usb\", MODE=\"666\"' > /etc/udev/rules.d/99-pt2.rules"
+sudo udevadm control --reload-rules && sudo udevadm trigger
+
+if libuvc can be found:
+try to add "./libuvc.so"
+path finder is so stupid
+
+correct the exec and icon path inside thermalai.desktop
+
+Copy thermalai.desktop file to ~/.local/share/applications
